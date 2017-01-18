@@ -1,4 +1,5 @@
 dofile(minetest.get_modpath("mccmd").."/aliases.lua")
+dofile(minetest.get_modpath("mccmd").."/admin.lua")
 minetest.register_chatcommand("list", {
 	description = "show who is logged on",
 	func = function(name, _)
