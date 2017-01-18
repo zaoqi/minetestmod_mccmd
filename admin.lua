@@ -78,3 +78,28 @@ minetest.register_chatcommand("deop", {
 				minetest.get_player_privs(revoke_name), ' ')
 	end,
 })
+
+minetest.register_privilege("kill", {description = "Can kill the players", give_to_singleplayer = false})
+minetest.register_chatcommand("kill", {
+	description = "Kill the player or you",
+	params = "[player]",
+	privs = {kill = true},
+	func = function(name, param)
+		local target
+		local targetname
+		if param == "" then
+			target = minetest.get_player_by_name(name)
+		else
+			target = minetest.get_player_by_name(param)
+		end
+		
+		if target then
+			targetname = target:get_player_name()
+			target:set_hp(0)
+			minetest.chat_send_all(targetname .. " fell out of the world")
+			minetest.chat_send_player(name, "Killed " .. targetname)
+		else
+			minetest.chat_send_player(name, minetest.colorize("#FF0000", "Player not found: " .. param))		
+		end
+	end
+})
