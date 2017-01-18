@@ -10,3 +10,10 @@ minetest.register_chatcommand("list", {
 		minetest.chat_send_player(name, players)
 	end
 })
+
+minetest.register_chatcommand("ping", {
+   description = "Ping",
+   func = function(_, _)
+      return true, "Pong!"
+   end,
+})
