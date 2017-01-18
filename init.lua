@@ -1,4 +1,3 @@
-dofile(minetest.get_modpath("mccmd").."/aliases.lua")
 dofile(minetest.get_modpath("mccmd").."/admin.lua")
 minetest.register_chatcommand("list", {
 	description = "show who is logged on",
@@ -17,3 +16,4 @@ minetest.register_chatcommand("ping", {
       return true, "Pong!"
    end,
 })
+dofile(minetest.get_modpath("mccmd").."/aliases.lua")
