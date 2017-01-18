@@ -1,4 +1,11 @@
-minetest.register_chatcommand("who", "list")
-minetest.register_chatcommand("tp", "teleport")
-minetest.register_chatcommand("summon", "spawnentity")
-minetest.register_chatcommand("stop", "shutdown")
+do
+	local function reg(name, from)
+		if minetest.chatcommands[from] then
+			minetest.register_chatcommand(name, minetest.chatcommands[from])
+		end
+	end
+    reg("who", "list")
+    reg("tp", "teleport")
+    reg("summon", "spawnentity")
+    reg("stop", "shutdown")
+end
