@@ -25,7 +25,7 @@ local gettext, ngettext
 if minetest.get_modpath("intllib") then
 	if intllib.make_gettext_pair then
 		-- New method using gettext.
-		gettext, ngettext = intllib.make_gettext_pair()
+		gettext, ngettext = intllib.make_gettext_pair("mccmd")
 	else
 		-- Old method using text files.
 		gettext = intllib.Getter()

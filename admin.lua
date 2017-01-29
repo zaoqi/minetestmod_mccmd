@@ -17,8 +17,8 @@
 local S, NS = dofile(minetest.get_modpath("mccmd").."/intllib.lua")
 
 minetest.register_chatcommand("op", {
-	params = "<name>",
-	description = "Give all privilege to player",
+	params = S("<name>"),
+	description = S("Give all privilege to player"),
 	func = function(name, grantname)
 		if not minetest.check_player_privs(name, {privs=true}) and
 				not minetest.check_player_privs(name, {basic_privs=true}) then
@@ -46,8 +46,8 @@ minetest.register_chatcommand("op", {
 })
 
 minetest.register_chatcommand("deop", {
-	params = "<name>",
-	description = "Remove all privilege from player",
+	params = S("<name>"),
+	description = S("Remove all privilege from player"),
 	privs = {},
 	func = function(name, revoke_name)
 		if not minetest.check_player_privs(name, {privs=true}) and
@@ -78,8 +78,8 @@ minetest.register_chatcommand("deop", {
 
 minetest.register_privilege("kill", {description = "Can kill the players", give_to_singleplayer = false})
 minetest.register_chatcommand("kill", {
-	description = "Kill the player",
-	params = "[player]",
+	description = S("Kill the player"),
+	params = S("[player]"),
 	privs = {kill = true},
 	func = function(name, targetname)
 		local target = minetest.get_player_by_name(targetname)
@@ -97,8 +97,8 @@ minetest.register_chatcommand("kill", {
 minetest.register_privilege("clear", {description = "Can clear player's inventory", give_to_singleplayer = false})
 
 minetest.register_chatcommand("clear", {
-	description = "Clear [player]'s inventory",
-	params = "[player] [item]",
+	description = S("Clear [player]'s inventory"),
+	params = S("[player] [item]"),
 	privs = {clear = true},
 	func = function(name, param)
 		local function clear(pname, listname, itemname)
