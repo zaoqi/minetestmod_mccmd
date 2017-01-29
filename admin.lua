@@ -12,16 +12,21 @@
 
 --You should have received a copy of the GNU Affero General Public License
 --along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-- Load support for intllib.
+local S, NS = dofile(minetest.get_modpath("mccmd").."/intllib.lua")
+
 minetest.register_chatcommand("op", {
 	params = "<name>",
-	description = S("Give all privilege to player"),
+	description = "Give all privilege to player",
 	func = function(name, grantname)
 		if not minetest.check_player_privs(name, {privs=true}) and
 				not minetest.check_player_privs(name, {basic_privs=true}) then
 			return false, S("Your privileges are insufficient.")
 		end
 		if not minetest.auth_table[grantname] then
-			return false, S("Player @1 does not exist.", grantname)
+			minetest.chat_send_player(name, minetest.colorize("#FF0000", S("That player cannot be found")))
+			return false
 		end
 		local grantprivs = minetest.registered_privileges
 		local privs = minetest.get_player_privs(grantname)
@@ -42,7 +47,7 @@ minetest.register_chatcommand("op", {
 
 minetest.register_chatcommand("deop", {
 	params = "<name>",
-	description = S("Remove all privilege from player"),
+	description = "Remove all privilege from player",
 	privs = {},
 	func = function(name, revoke_name)
 		if not minetest.check_player_privs(name, {privs=true}) and
@@ -51,7 +56,8 @@ minetest.register_chatcommand("deop", {
 		end
 		local revoke_priv_str = "all"
 		if not minetest.auth_table[revoke_name] then
-			return false, S("Player @1 does not exist.", revoke_name)
+			minetest.chat_send_player(name, minetest.colorize("#FF0000", S("That player cannot be found")))
+			return false
 		end
 		local revoke_privs = minetest.string_to_privs(revoke_priv_str)
 		local privs = minetest.get_player_privs(revoke_name)
@@ -83,7 +89,65 @@ minetest.register_chatcommand("kill", {
 			minetest.chat_send_all(targetname .. " fell out of the world")
 			minetest.chat_send_player(name, "Killed " .. targetname)
 		else
-			minetest.chat_send_player(name, minetest.colorize("#FF0000", "Player not found: " .. targetname))
+			minetest.chat_send_player(name, minetest.colorize("#FF0000", S("That player cannot be found")))
 		end
 	end
 })
+
+minetest.register_privilege("clear", {description = "Can clear player's inventory", give_to_singleplayer = false})
+
+minetest.register_chatcommand("clear", {
+	description = "Clear [player]'s inventory",
+	params = "[player] [item]",
+	privs = {clear = true},
+	func = function(name, param)
+		local function clear(pname, listname, itemname)
+			local inv = minetest.get_inventory({type = "player", name = pname})
+			local player = minetest.get_player_by_name(pname)
+			if not player then return nil end
+			if not inv then return nil end
+			local list = inv:get_list(listname)
+			if not list then return nil end
+			local index, stack
+			local count = 0
+			local ss
+
+			for index, stack in pairs(list) do
+				if itemname == "*" then ss = stack:get_name() else ss = itemname end
+				if (not inv:get_stack(listname, index):is_empty()) and stack:get_name() == ss then
+					inv:set_stack(listname, index, ItemStack(""))
+					count = count + 1
+				end
+			end
+			return count
+		end
+		local user = minetest.get_player_by_name(name)
+		local target = minetest.get_player_by_name(param:split(' ')[1] or "")
+		local itemstring = param:split(' ')[2] or "*"
+		local cleareditems
+		if param == "" then
+			target = user
+		end
+		if target then
+			local count = 0
+			count = count + (clear(name, "main", itemstring) or 0)
+			count = count + (clear(name, "craft", itemstring) or 0)
+			count = count + (clear(name, "craftpreview", itemstring) or 0)
+			count = count + (clear(name, "craftresult", itemstring) or 0)
+			if count == 0 then
+				minetest.chat_send_player(name,
+					minetest.colorize("#FF0000",
+						S("Could not clear the inventory of @1, no items to remove", target:get_player_name())
+					)
+				)
+			else
+				minetest.chat_send_player(name,
+					S("Cleared inventory of @1, removing @2 items.", target:get_player_name(), tostring(count))
+				)
+			end
+		else
+			minetest.chat_send_player(name, minetest.colorize("#FF0000", S("That player cannot be found")))
+		end
+	end
+})
+

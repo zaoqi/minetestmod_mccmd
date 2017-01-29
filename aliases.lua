@@ -12,14 +12,16 @@
 
 --You should have received a copy of the GNU Affero General Public License
 --along with this program.  If not, see <http://www.gnu.org/licenses/>.
-do
-	local function reg(name, from)
-		if minetest.chatcommands[from] then
-			minetest.register_chatcommand(name, minetest.chatcommands[from])
-		end
+
+-- Load support for intllib.
+local S, NS = dofile(minetest.get_modpath("mccmd").."/intllib.lua")
+
+local function reg(name, from)
+	if minetest.chatcommands[from] then
+		minetest.register_chatcommand(name, minetest.chatcommands[from])
 	end
-    reg("who", "list")
-    reg("tp", "teleport")
-    reg("summon", "spawnentity")
-    reg("stop", "shutdown")
 end
+reg("who", "list")
+reg("tp", "teleport")
+reg("summon", "spawnentity")
+reg("stop", "shutdown")

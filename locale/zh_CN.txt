@@ -1,11 +1,8 @@
-Give all privilege to player = 给玩家所有权限
-Player @1 does not exist. = 玩家@1不存在。
-Remove all privilege from player = 删除玩家的所有权限
+Cleared inventory of @1, removing @2 items. = 清除@1的@2项物品。
+Could not clear the inventory of @1, no items to remove = 无法清除@1的物品，没有要移除的物品
+That player cannot be found = 找不到该玩家
 You are no longer op = 你不再是OP
 You are now op = 你现在是OP
 Your privileges are insufficient. = 您的权限不足。
 @1 fell out of the world = @1掉出了世界
-Ping = 乒
 Pong! = 乓！
-Suicide = 自杀
-show who is logged on = 显示谁在线

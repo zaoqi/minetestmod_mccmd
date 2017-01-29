@@ -12,16 +12,16 @@
 
 --You should have received a copy of the GNU Affero General Public License
 --along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 -- Load support for intllib.
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S, NS = dofile(minetest.get_modpath("mccmd").."/intllib.lua")
 
 dofile(minetest.get_modpath("mccmd").."/admin.lua")
 minetest.after(0, function()
 	dofile(minetest.get_modpath("mccmd").."/aliases.lua")
 end)
 minetest.register_chatcommand("list", {
-	description = S("show who is logged on"),
+	description = "show who is logged on",
 	func = function(name)
 		local players = ""
 		for _, player in ipairs(minetest.get_connected_players()) do
@@ -32,15 +32,15 @@ minetest.register_chatcommand("list", {
 })
 
 minetest.register_chatcommand("ping", {
-   description = S("Ping"),
+   description = "Ping",
    func = function()
       return true, S("Pong!")
    end,
 })
 
 minetest.register_chatcommand("suicide", {
-	description = S("Suicide"),
-	func = function(name
+	description = "Suicide",
+	func = function(name)
 		minetest.get_player_by_name(name):set_hp(0)
 		minetest.chat_send_all(S("@1 fell out of the world", name))
 	end
