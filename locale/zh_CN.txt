@@ -1,0 +1,11 @@
+Give all privilege to player = 给玩家所有权限
+Player @1 does not exist. = 玩家@1不存在。
+Remove all privilege from player = 删除玩家的所有权限
+You are no longer op = 你不再是OP
+You are now op = 你现在是OP
+Your privileges are insufficient. = 您的权限不足。
+@1 fell out of the world = @1掉出了世界
+Ping = 乒
+Pong! = 乓！
+Suicide = 自杀
+show who is logged on = 显示谁在线
